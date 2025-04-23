@@ -1,14 +1,14 @@
 services:
   frontend:
     build:
-      context: .
-      dockerfile: docker/frontend.Dockerfile
+      context: ./frontend
+      dockerfile: ../docker/frontend.Dockerfile
     ports:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     working_dir: /app
-    command: pnpm dev
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8080
 
@@ -21,6 +21,5 @@ services:
     volumes:
       - ./backend:/app
     working_dir: /app
-    command: go run ./cmd/main.go
     environment:
       - PORT=8080

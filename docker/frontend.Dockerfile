@@ -1,18 +1,17 @@
 # フロント: Next.js 15 + React 19 + pnpm
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
-# pnpm
+# pnpm の使用を有効化
 RUN corepack enable
 
-# 依存ファイルコピー＆インストール
-COPY frontend/pnpm-lock.yaml frontend/package.json ./
+# 必要ファイルのみコピーして依存インストール
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
-# 残りのファイルコピー
-COPY frontend ./
+# 残りのアプリファイルをコピー（node_modules を上書きしないようにこの順序）
+COPY . .
 
-# ポート & 起動
 EXPOSE 3000
 CMD ["pnpm", "dev"]
