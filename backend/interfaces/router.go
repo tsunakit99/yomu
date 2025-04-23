@@ -12,7 +12,7 @@ import (
 func NewRouter() *echo.Echo {
 	e := echo.New()
 
-	articleRepo := infra.NewLocalArticleRepository()
+	articleRepo := infra.NewMarkdownArticleRepository("posts")
 	articleUC := usecase.NewArticleUsecase(articleRepo)
 	articleHandler := handler.NewArticleHandler(articleUC)
 
