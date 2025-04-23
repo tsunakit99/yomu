@@ -10,7 +10,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
         <ArticleDetail article={article} />
       </main>
     );
-  } catch (e) {
+  } catch {
     notFound();
   }
 }
