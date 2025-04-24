@@ -7,6 +7,7 @@ import (
 
 type ArticleUsecase interface {
 	GetAllArticles() ([]*model.Article, error)
+	GetArticleBySlug(slug string) (*model.ArticleDetail, error)
 }
 
 type articleUsecase struct {
@@ -25,4 +26,12 @@ func (u *articleUsecase) GetAllArticles() ([]*model.Article, error) {
 		return nil, err
 	}
 	return articles, nil
+}
+
+func (u *articleUsecase) GetArticleBySlug(slug string) (*model.ArticleDetail, error) {
+	article, err := u.repo.GetBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+	return article, nil
 }
