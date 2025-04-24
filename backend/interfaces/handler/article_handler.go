@@ -24,3 +24,15 @@ func (h *ArticleHandler) GetAll(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, articles)
 }
+
+func (h *ArticleHandler) GetBySlug(c echo.Context) error {
+	slug := c.Param("slug")
+	article, err := h.uc.GetArticleBySlug(slug)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	if article == nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Article not found"})
+	}
+	return c.JSON(http.StatusOK, article)
+}
