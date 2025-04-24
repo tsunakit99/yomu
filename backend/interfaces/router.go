@@ -20,6 +20,7 @@ func NewRouter() *echo.Echo {
 		return c.String(http.StatusOK, "Yomu API is healthy 💊")
 	})
 	e.GET("/api/articles", articleHandler.GetAll)
+	e.GET("/api/articles/:slug", articleHandler.GetBySlug)
 
 	return e
 }
