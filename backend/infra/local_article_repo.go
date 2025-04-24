@@ -17,3 +17,17 @@ func (r *LocalArticleRepository) GetAll() ([]*model.Article, error) {
 		{Slug: "hello-yomu", Title: "Yomuへようこそ", Date: "2024-04-27", Tags: []string{"welcome", "intro"}},
 	}, nil
 }
+
+func (r *LocalArticleRepository) GetBySlug(slug string) (*model.ArticleDetail, error) {
+	// 今は仮でハードコード
+	if slug == "hello-yomu" {
+		return &model.ArticleDetail{
+			Slug:        "hello-yomu",
+			Title:       "Yomuへようこそ",
+			Date:        "2024-04-27",
+			Tags:        []string{"welcome", "intro"},
+			ContentHTML: "<p>YomuはMarkdownで記事を書くためのツールです。</p>",
+		}, nil
+	}
+	return nil, nil
+}
