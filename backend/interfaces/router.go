@@ -12,7 +12,7 @@ import (
 func NewRouter() *echo.Echo {
 	e := echo.New()
 
-	articleRepo := infra.NewLocalArticleRepository()
+	articleRepo := infra.NewMarkdownArticleRepository("posts")
 	articleUC := usecase.NewArticleUsecase(articleRepo)
 	articleHandler := handler.NewArticleHandler(articleUC)
 
@@ -20,6 +20,7 @@ func NewRouter() *echo.Echo {
 		return c.String(http.StatusOK, "Yomu API is healthy 💊")
 	})
 	e.GET("/api/articles", articleHandler.GetAll)
+	e.GET("/api/articles/:slug", articleHandler.GetBySlug)
 
 	return e
 }
