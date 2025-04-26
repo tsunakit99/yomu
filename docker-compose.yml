@@ -18,6 +18,8 @@ services:
       dockerfile: ../docker/backend.Dockerfile
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     volumes:
       - ./backend:/app
       - ./frontend/posts:/app/posts  # ←frontend/posts を backend に見せる
