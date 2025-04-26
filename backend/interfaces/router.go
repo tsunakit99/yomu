@@ -16,11 +16,18 @@ func NewRouter() *echo.Echo {
 	articleUC := usecase.NewArticleUsecase(articleRepo)
 	articleHandler := handler.NewArticleHandler(articleUC)
 
+	likeRepo := infra.NewDynamoLikeRepository()
+	likeUC := usecase.NewLikeUsecase(likeRepo)
+	likeHandler := handler.NewLikeHandler(likeUC)
+
 	e.GET("/api/health", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Yomu API is healthy 💊")
 	})
+
 	e.GET("/api/articles", articleHandler.GetAll)
 	e.GET("/api/articles/:slug", articleHandler.GetBySlug)
+
+	e.POST("/api/likes/:slug", likeHandler.AddLike)
 
 	return e
 }
