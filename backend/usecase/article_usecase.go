@@ -21,17 +21,9 @@ func NewArticleUsecase(repo repository.ArticleRepository) ArticleUsecase {
 }
 
 func (u *articleUsecase) GetAllArticles() ([]*model.Article, error) {
-	articles, err := u.repo.GetAll()
-	if err != nil {
-		return nil, err
-	}
-	return articles, nil
+	return u.repo.GetAll()
 }
 
 func (u *articleUsecase) GetArticleBySlug(slug string) (*model.ArticleDetail, error) {
-	article, err := u.repo.GetBySlug(slug)
-	if err != nil {
-		return nil, err
-	}
-	return article, nil
+	return u.repo.GetBySlug(slug)
 }
