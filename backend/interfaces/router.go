@@ -30,6 +30,9 @@ func NewRouter() *echo.Echo {
 
 	e.GET("/api/articles", articleHandler.GetAll)
 	e.GET("/api/articles/:slug", articleHandler.GetBySlug)
+	e.POST("/api/articles", articleHandler.Create)
+	e.PUT("/api/articles/:slug", articleHandler.Update)
+	e.DELETE("/api/articles/:slug", articleHandler.Delete)
 
 	e.POST("/api/likes/:slug", likeHandler.AddLike)
 
