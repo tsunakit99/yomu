@@ -1,6 +1,7 @@
 package infra
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -83,4 +84,55 @@ func (r *MarkdownArticleRepository) GetBySlug(slug string) (*model.ArticleDetail
 		Tags:        fm.Tags,
 		ContentHTML: buf.String(),
 	}, nil
+}
+
+func (r *MarkdownArticleRepository) Create(slug string, input *model.ArticleInput) error {
+	filePath := filepath.Join(r.PostDir, slug+".md")
+
+	// ファイルがすでに存在していればエラーにする
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("article already exists")
+	}
+
+	return writeMarkdownFile(filePath, input)
+}
+
+func (r *MarkdownArticleRepository) Update(slug string, input *model.ArticleInput) error {
+	filePath := filepath.Join(r.PostDir, slug+".md")
+
+	// 存在しない場合はエラー（新規登録ではない）
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return fmt.Errorf("article not found")
+	}
+
+	return writeMarkdownFile(filePath, input)
+}
+
+func (r *MarkdownArticleRepository) Delete(slug string) error {
+	filePath := filepath.Join(r.PostDir, slug+".md")
+	return os.Remove(filePath)
+}
+
+// 🔥 共通：Markdownファイルの書き込みロジック
+func writeMarkdownFile(filePath string, input *model.ArticleInput) error {
+	frontMatter := fmt.Sprintf(`---
+title: "%s"
+date: "%s"
+tags:
+%s
+---
+
+%s
+`, input.Title, input.Date, formatTags(input.Tags), input.Content)
+
+	return os.WriteFile(filePath, []byte(frontMatter), 0644)
+}
+
+// 🔥 FrontMatter内tagsリストの整形
+func formatTags(tags []string) string {
+	var sb strings.Builder
+	for _, tag := range tags {
+		sb.WriteString(fmt.Sprintf("  - \"%s\"\n", tag))
+	}
+	return sb.String()
 }
