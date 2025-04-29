@@ -31,3 +31,16 @@ func (r *LocalArticleRepository) GetBySlug(slug string) (*model.ArticleDetail, e
 	}
 	return nil, nil
 }
+
+func (r *LocalArticleRepository) Create(slug string, input *model.ArticleInput) error {
+	// 今は何もしない
+	return nil
+}
+func (r *LocalArticleRepository) Update(slug string, input *model.ArticleInput) error {
+	// 今は何もしない
+	return nil
+}
+func (r *LocalArticleRepository) Delete(slug string) error {
+	// 今は何もしない
+	return nil
+}
